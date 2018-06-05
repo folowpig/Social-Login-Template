@@ -4,7 +4,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Social Login</title>
+    <title>Neo4j visualization</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <style>
@@ -21,20 +21,43 @@
 
     <div class="row">
 
-        <!-- LOCAL INFORMATION -->
+        <!-- Local information -->
         <div class="col-sm-6">
             <div class="well">
                 <h3><span class="fa fa-user"></span> Local</h3>
-
-                    <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
-                    </p>
+                    <% if (user.local.email) { %>
+                        <p>
+                            <strong>id</strong>: <%= user._id %><br>
+                            <strong>email</strong>: <%= user.local.email %><br>
+                            <strong>password</strong>: <%= user.local.password %>
+                        </p>
+                        <a href="/unlink/local" class="btn btn-default">Unlink</a>
+                    <% } else { %>
+                        <a href="/connect/local" class="btn btn-default">Connect Local Account</a>
+                    <% } %>
 
             </div>
         </div>
 
+        <!-- Google Information -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google</h3>
+                    <% if (user.google.token) { %>
+                        <p>
+                            <strong>id</strong>: <%= user.google.id %><br>
+                            <strong>token</strong>: <%= user.google.token %><br>
+                            <strong>email</strong>: <%= user.google.email %><br>
+                            <strong>name</strong>: <%= user.google.name %>
+                        </p>
+                        <a href="/unlink/google" class="btn btn-default">Unlink</a>
+                    <% } else { %>
+                        <a href="/connect/google" class="btn btn-default">Connect Google Account</a>
+                    <% } %>
+
+            </div>
+        </div>
+        <p align = "center">Go to <a href="/movies">Movie Search</a>.</p>
     </div>
 
 </div>

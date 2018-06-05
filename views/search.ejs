@@ -1,0 +1,96 @@
+<!-- ./views/index2.ejs -->
+<html>
+    <head>
+        <title>Neo4j visualization</title>
+    </head>
+<style>
+    #h1 {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        text-align: center;
+        font-size: 300%;
+    }
+    #table1 {
+        position: absolute;
+    left:0px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+    }
+    #table1 td, #table1 th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    }
+    #table1 tr:nth-child(even){background-color: #f2f2f2;}
+
+#table1 tr:hover {background-color: #ddd;}
+
+#table1 th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+   #table2 {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+    position: absolute;
+    right: 0px;
+    }
+    #table2 td, #table2 th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    }
+    #table12 tr:nth-child(even){background-color: #f2f2f2;}
+
+#table2 tr:hover {background-color: #ddd;}
+
+#table2 th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+</style>
+<body>
+<div class="jumbotron text-center">
+<h1 id="h1">Movies <a href="/profile" class="btn btn-danger"><span class="fa fa-adn"></span><object align="right" style="font-size:20px">profile</object></a></h1>
+
+<form method="post" action="/movies/search">
+
+<label>Search Movie</label>
+<input type="text" id="txtMovie" name="searchMovie"><br>
+<input type="submit" value="Submit">
+
+</form>
+<form method="post" action="/movies/search/description">
+    <label>Description</label>
+    <input type="text" id="txtDescription" name="descriptionMovie"><br>
+    <input type="submit" value="Submit">
+</form>
+
+<table id="table1" style="border-style:double;">
+    <tr>
+        <th>ID</th>
+        <th>Movie</td>
+        <th>Tagline</td>
+        <th>Released</td>
+    </tr>
+<% moviesearch.forEach(function(search){ %>
+    <tr>
+        <td><%= search.id %> </td>
+        <td><%= search.title %></td>
+        <td><%= search.tagline %> </td>
+        <td> This moive was filmed in <%= search.released %> </td>
+    </tr>
+    <% }) %>
+
+</table>
+
+</body>
+</div>
+</html>

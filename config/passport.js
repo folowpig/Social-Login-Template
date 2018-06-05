@@ -6,7 +6,6 @@ var localSt = require('passport-local').Strategy;
 var googleSt = require('passport-google-oauth').OAuth2Strategy;
 
 // Load user model
-
 var Users = require('../app/models/users');
 
 // load the auth variables
@@ -36,25 +35,37 @@ module.exports = function(passport) {
     
     function(req, email, password, done) {
         process.nextTick(function () {
-            //Check if the user who is trying to login exist on the db
-            Users.findOne({ 'local.email' : email}, function(err, user) {
-                if (err) { return done(err);}
+            if (!req.user) {
+                //Check if the user who is trying to login exist on the db
+                Users.findOne({ 'local.email' : email}, function(err, user) {
+                    if (err) { return done(err);}
 
-                //Check if there is a user with the same email
-                if (user) {
-                    return done(null, false, req.flash('signupMessage','This email is already taken by someone.'));
-                } else { //if there is no user with the same email
-                    var newUser = new Users();
+                    //Check if there is a user with the same email
+                    if (user) {
+                        return done(null, false, req.flash('signupMessage','This email is already taken by someone.'));
+                    } else { //if there is no user with the same email
+                        const newUser = new Users();
 
-                    newUser.local.email = email;
-                    newUser.local.password = newUser.generateHash(password);
+                        newUser.local.email = email;
+                        newUser.local.password = newUser.generateHash(password);
 
-                    newUser.save (function(err) {
-                        if(err) { throw err;}
-                        return done(null, newUser);
-                    });
-                }
-            });
+                        newUser.save (function(err) {
+                            if(err) { throw err;}
+                            return done(null, newUser);
+                        });
+                    }
+                });
+            } else {
+                const user = req.user;
+
+                user.local.email = email;
+                user.local.password = user.generateHash(password);
+
+                user.save (function (err) {
+                    if (err) { throw err; }
+                    return done (null, user);
+                });
+            }
         });
     }));
 
@@ -81,30 +92,57 @@ module.exports = function(passport) {
     passport.use(new googleSt( {
         clientID: auth.googleAuth.clientID,
         clientSecret: auth.googleAuth.clientSecret,
-        callbackURL: auth.googleAuth.callbackURL
+        callbackURL: auth.googleAuth.callbackURL,
+        passReqToCallback: true
     },
 
-    function(token, refreshToken, profile, done) {
+    function(req, token, refreshToken, profile, done) {
         process.nextTick(function() {
-            Users.findOne({'google.id': profile.id}, function(err, user) {
-                if(err) {return doen(err);}
+            //check if the user is already loggin in
+            if (!req.user) {
+                Users.findOne({'google.id': profile.id}, function(err, user) {
+                    if(err) {return doen(err);}
 
-                if(user) {
-                    return done(null, user);
-                } else {
-                    var newUser = new Users();
+                    if(user) {
+                        // if the account was linked at one point and removed, save its token, name and email only.
+                        if (!user.google.token) {
+                            user.google.token = token;
+                            user.google.name = profile.displayName;
+                            user.google.email = profile.emails[0].value;
 
-                    newUser.google.id = profile.id;
-                    newUser.google.token = token;
-                    newUser.google.name = profile.displayName;
-                    newUser.google.email = profile.emails[0].value;
+                            user.save(function(err) {
+                                if (err) { throw err; }
+                                return done (null, user);
+                            });
+                        }
+                        return done(null, user);
+                    } else {
+                        const newUser = new Users();
 
-                    newUser.save(function(err) {
-                        if (err) { throw err; }
-                        return done(null, newUser);
-                    });
-                }
-            });
+                        newUser.google.id = profile.id;
+                        newUser.google.token = token;
+                        newUser.google.name = profile.displayName;
+                        newUser.google.email = profile.emails[0].value;
+
+                        newUser.save(function(err) {
+                            if (err) { throw err; }
+                            return done(null, newUser);
+                        });
+                    }
+                });
+            } else {
+                const user = req.user;
+
+                user.google.id = profile.id;
+                user.google.token = token;
+                user.google.name = profile.displayName;
+                user.google.email = profile.emails[0].value;
+
+                user.save(function(err) {
+                    if (err) { throw err; }
+                    return done (null, user);
+                });
+            }
         });
     }));
 };
