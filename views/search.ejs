@@ -1,7 +1,7 @@
 <!-- ./views/index2.ejs -->
 <html>
     <head>
-        <title>Neo4j visualization</title>
+        <title>Movie</title>
     </head>
 <style>
     #h1 {
@@ -57,8 +57,8 @@
 
 </style>
 <body>
-<div class="jumbotron text-center">
-<h1 id="h1">Movies <a href="/profile" class="btn btn-danger"><span class="fa fa-adn"></span><object align="right" style="font-size:20px">profile</object></a></h1>
+<!-- <div class="jumbotron text-center"> -->
+<h1 id="h1">Movies <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">profile</object></a></h1>
 
 <form method="post" action="/movies/search">
 
@@ -70,7 +70,7 @@
 <form method="post" action="/movies/search/description">
     <label>Description</label>
     <input type="text" id="txtDescription" name="descriptionMovie"><br>
-    <input type="submit" value="Submit">
+    <input type="submit" id="submitbtn" value="Submit">
 </form>
 
 <table id="table1" style="border-style:double;">
@@ -81,16 +81,22 @@
         <th>Released</td>
     </tr>
 <% moviesearch.forEach(function(search){ %>
-    <tr>
+    <tr onclick = "myFunction('<%= search.title %>')">
         <td><%= search.id %> </td>
         <td><%= search.title %></td>
         <td><%= search.tagline %> </td>
-        <td> This moive was filmed in <%= search.released %> </td>
+        <td> <%= search.released %> </td>
+
     </tr>
     <% }) %>
 
 </table>
-
+<script>
+        function myFunction(x) {
+            document.getElementById("txtDescription").value = x;
+            document.getElementById("submitbtn").click();
+        }
+    </script>
 </body>
-</div>
+<!-- </div> -->
 </html>

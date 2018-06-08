@@ -7,17 +7,13 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 var _ = require('lodash');
 
-
-const hostname = 'localhost';
 var app = express();
-
 
 const searchRouter = express.Router();
 
 searchRouter.use(bodyParser.json()); 
 
 searchRouter.route('/')
-
 
 
 //view Engine

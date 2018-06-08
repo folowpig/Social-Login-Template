@@ -1,6 +1,6 @@
 // ./config/database.js
 module.exports = {
 
-    'url' : 'mongodb://localhost:27017/UserInfo' // looks like mongodb://<user>:<pass>@mongo.onmodulus.net:27017/Mikha4ot
-
+    //mongoDB database url
+    'url' : 'mongodb://localhost:27017/UserInfo'
 };

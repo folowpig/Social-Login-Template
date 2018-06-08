@@ -1,4 +1,4 @@
-<!-- ./views/index3.ejs -->
+<!-- ./views/person.ejs -->
 <html>
     <head>
         <title>Movie</title>
@@ -63,7 +63,7 @@
 <form method="post" action="/movies/search">
     <label>Search Movie</label>
     <input type="text" id="txtMovie" name="searchMovie"><br>    
-    <input type="submit" value="Submit">
+    <input type="submit" id="submitbtn" value="Submit">
 </form>
 
 <form method="post" action="/movies/search/description">
@@ -75,30 +75,30 @@
 <form method="post" action="/movies/search/description/person">
     <label>Person Description</label>
     <input type="text" id="txtDescriptionPerson" name="searchPerson"><br>
-    <input type="submit" id="submitbtn"value="Submit">
+    <input type="submit" value="Submit">
 </form>
 
 <table id="table1" style="border-style:double;">
     
 
     <tr>
-            <td colspan="5" style="text-align: center"> <%= movieTT %> </td>
+            <td colspan="5" style="text-align: center"> <%= personNN %> </td>
     </tr>
     <tr>
-            <th>Name</th>
-            <th>Job</th>
-            <th>Role</th>
-            <th>Born</th>
+            <th>Title</th>
+            <th>TagLine</th>
+            <th>Released</th>
             
         </tr>   
        
         <tr>
-            <% movieDescription.forEach(function(description){ %>
+            <% personDescription.forEach(function(desPerson){ %>
             
-            <td onclick = "myFunction('<%= description.name %>')"> <%= description.name %> </td>
-            <td> <%= description.job %> </td>
-            <td>  <%= description.role %> </td>
-            <td>  <%= description.born %> </td>
+            <td onclick = "myFunction('<%= desPerson.title %>')"> <%= desPerson.title %> </td>
+            <td> <%= desPerson.tagline %> </td>
+            <td> <%= desPerson.released %> </td>
+
+            
         </tr>
         <% }) %>
 
@@ -106,7 +106,7 @@
 </table>
 <script>
         function myFunction(x) {
-            document.getElementById("txtDescriptionPerson").value = x;
+            document.getElementById("txtMovie").value = x;
             document.getElementById("submitbtn").click();
         }
 </script>

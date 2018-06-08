@@ -1,4 +1,4 @@
-// ./app/movieDescription.js
+// ./app/personSearch.js
 var neo4j = require('neo4j-driver').v1;
 var morgan = require('morgan');
 var express = require('express');
@@ -12,9 +12,9 @@ const hostname = 'localhost';
 var app = express();
 
 //construct Decription Router 
-const descriptionRouter = express.Router();
-descriptionRouter.use(bodyParser.json()); 
-descriptionRouter.route('/')
+const descriptionPersonRouter = express.Router();
+descriptionPersonRouter.use(bodyParser.json()); 
+descriptionPersonRouter.route('/')
 
 
 
@@ -31,33 +31,35 @@ app.use(express.static(path.join(__dirname, 'public')));
 var driver = neo4j.driver('bolt://127.0.0.1:7687', neo4j.auth.basic('neo4j', '12345'));
 var session = driver.session();
 
-descriptionRouter.post('/movies/search/description', (req, res) =>{
+descriptionPersonRouter.post('/movies/search/description/person', (req, res) =>{
     
-    var paramName2 = req.body.descriptionMovie;
-   
+    var paramName2 = req.body.searchPerson;
+    
 
     session
-
-    .run("MATCH (n:Movie{title:{title}}) <- [r]- (p:Person)\
-    return n.title, p.name, head(split(lower(type(r)), '_')), r.roles, p.born",{title: paramName2})
+   
+    .run("MATCH (p:Person{name:{name}}) -->  (n:Movie)\
+     return p.name, n.title, n.tagline, n.released",{name: paramName2})
 
     .then(function(result){
 
-        var movieT = result.records[0];
-        var singleT = movieT.get(0)
+        var personN = result.records[0];
+        var singleN = personN.get(0)
         var movieArr2 = [];
         
          result.records.forEach(function(record){
+          
             movieArr2.push({
-                name: record._fields[1],
-                job: record._fields[2],
-                role: record._fields[3],
-                born: record._fields[4]
+               
+                title: record._fields[1],
+                tagline: record._fields[2],
+                released: record._fields[3]
+              
             });
         });     
-        res.render('description', {
-            movieDescription: movieArr2,
-            movieTT: singleT
+        res.render('person', {
+            personDescription: movieArr2,
+            personNN: singleN
         }); 
     })
   .catch(function(err){
@@ -65,4 +67,4 @@ descriptionRouter.post('/movies/search/description', (req, res) =>{
       });
   }) 
   
-module.exports = descriptionRouter;
+module.exports = descriptionPersonRouter;

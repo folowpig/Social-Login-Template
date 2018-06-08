@@ -21,15 +21,11 @@ var router = express.Router();
 
 const searchRouter = require('./app/movieSearch');
 const descriptionRouter = require('./app/movieDescription');
+const personRouter = require('./app/personSearch');
 
 //DB configuration
 mongoose.connect(DBconfig.url); //connect to the mongoDB
 require('./config/passport.js')(passport);  //passport configuration
-
-//Neo4j configuration
-var driver = neo4j.driver('bolt://127.0.0.1:7687', neo4j.auth.basic('neo4j', '12345'));
-var neo_session = driver.session();
-
 
 //Express application setup
 serverApp.use(morgan('dev'));
@@ -50,6 +46,7 @@ serverApp.use(flash());
 require('./app/routes.js')(serverApp, passport);
 serverApp.use(searchRouter);
 serverApp.use(descriptionRouter);
+serverApp.use(personRouter)
 
 const server = http.createServer(serverApp);
 server.listen(port, hostname, () => {

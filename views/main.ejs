@@ -1,6 +1,7 @@
+<!-- ./views/main.ejs -->
 <html>
     <head>
-        <title>Neo4j visualization</title>
+        <title>Movie</title>
     </head>
 <style>
     #h1 {
@@ -56,14 +57,14 @@
 
 </style>
 <body>
- <div class="jumbotron text-center">
-<h1 id="h1">Movies <a href="/profile" class="btn btn-danger"><span class="fa fa-adn"></span><object align="right" style="font-size:20px">profile</object></a> </h1>
+<!-- <div class="jumbotron text-center"> -->
+<h1 id="h1">Movies <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">profile</object></a></h1>
 
 <form method="post" action="/movies/search">
 
 <label>Search Movie</label><br>
 <input type="text" id="txtMovie" name="searchMovie"><br>
-<input type="submit" value="Submit">
+<input type="submit" id="submitbtn" value="Submit">
 
 </form>
 
@@ -74,16 +75,21 @@
         <th>Tagline</td>
     </tr>
 <% movies.forEach(function(movie){ %>
-    <tr>
+    <tr onclick = "myFunction('<%= movie.title %>')">
         <td><%= movie.id %> </td>
         <td><%= movie.title %></td>
         <td><%= movie.tagline %> </td>
-    
     </tr>
-    <% }) %>
+<% }) %>
 
 </table>
-
+<script>
+    function myFunction(x) {
+        document.getElementById("txtMovie").value = x;
+        document.getElementById("submitbtn").click();
+    }
+</script>
 </body>
-</div>
+<!-- </div> -->
 </html>
+
