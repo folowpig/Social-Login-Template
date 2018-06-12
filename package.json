@@ -24,6 +24,7 @@
     "method-override": "~2.3.10",
     "express-session": "~1.15.6",
     "neo4j-driver": "~1.6.1",
+    "uuid-v4": "~0.1.0",
     "lodash": "~4.17.10"
   }
 }

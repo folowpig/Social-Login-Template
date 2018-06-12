@@ -58,7 +58,10 @@
 </style>
 <body>
 <!-- <div class="jumbotron text-center"> -->
-<h1 id="h1">Movies <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">profile</object></a></h1>
+<h1 id="h1">Movies 
+    <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">Profile</object></a>
+    <a href="/visualization" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px; margin-right:15px">Graph</object></a>
+</h1>
 
 <form method="post" action="/movies/search">
     <label>Search Movie</label>
@@ -88,16 +91,21 @@
             <th>Title</th>
             <th>TagLine</th>
             <th>Released</th>
+            <th>Watch</th>
             
         </tr>   
        
         <tr>
             <% personDescription.forEach(function(desPerson){ %>
             
-            <td onclick = "myFunction('<%= desPerson.title %>')"> <%= desPerson.title %> </td>
+            <td onclick = "clickFunction('<%= desPerson.title %>')"> <%= desPerson.title %> </td>
             <td> <%= desPerson.tagline %> </td>
             <td> <%= desPerson.released %> </td>
-
+            <td>
+                <form method="post" action="/movies/clickWatch">
+                    <button onclick = "alert('You have watched: ' + '<%= desPerson.title %>')"  value="<%= desPerson.title %>" name="inputClickWatch" >  Watch  </button>
+                </form>
+            </td>
             
         </tr>
         <% }) %>
@@ -105,10 +113,10 @@
 
 </table>
 <script>
-        function myFunction(x) {
-            document.getElementById("txtMovie").value = x;
-            document.getElementById("submitbtn").click();
-        }
+    function clickFunction(x) {
+        document.getElementById("txtMovie").value = x;
+        document.getElementById("submitbtn").click();
+    }
 </script>
 
 </body>

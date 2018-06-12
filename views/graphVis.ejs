@@ -1,0 +1,49 @@
+<!-- ./views/graphVis.ejs -->
+
+<html>
+    <head>
+        <title>Movie</title>
+        <style>
+            #viz {
+                width: 900px;
+                height: 700px;
+            }
+        </style>
+        <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
+    </head>
+    <h1 id="h1">Movies Graph Visualization
+        <a href="/movies" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">Back</object></a>
+        <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px; margin-right:15px">Profile</object></a>
+    </h1>
+    <script>
+        function draw() {
+            var config = {
+                container_id: "viz",
+                server_url: "bolt://127.0.0.1:7687",
+                server_user: "neo4j",
+                server_password: "12345",
+                labels: {
+                    "Person": {
+                        caption: "name"
+                    },
+                    "Movie": {
+                        caption: "title"
+                    }
+                },
+
+                relationships: {
+
+                },
+                initial_cypher: "MATCH p=()-[]->() RETURN p"
+            }
+
+            var viz = new NeoVis.default(config);
+            viz.render();
+        }
+    </script>
+    <body onload = "draw()">
+        <div id="viz">
+
+        </div>
+    </body>
+</html>

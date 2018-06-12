@@ -58,7 +58,10 @@
 </style>
 <body>
 <!-- <div class="jumbotron text-center"> -->
-<h1 id="h1">Movies <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">profile</object></a></h1>
+<h1 id="h1">Movies 
+    <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">Profile</object></a>
+    <a href="/visualization" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px; margin-right:15px">Graph</object></a>
+</h1>
 
 <form method="post" action="/movies/search">
     <label>Search Movie</label>
@@ -90,12 +93,13 @@
             <th>Role</th>
             <th>Born</th>
             
+            
         </tr>   
        
         <tr>
             <% movieDescription.forEach(function(description){ %>
             
-            <td onclick = "myFunction('<%= description.name %>')"> <%= description.name %> </td>
+            <td onclick = "clickFunction('<%= description.name %>')"> <%= description.name %> </td>
             <td> <%= description.job %> </td>
             <td>  <%= description.role %> </td>
             <td>  <%= description.born %> </td>
@@ -105,10 +109,10 @@
 
 </table>
 <script>
-        function myFunction(x) {
-            document.getElementById("txtDescriptionPerson").value = x;
-            document.getElementById("submitbtn").click();
-        }
+    function clickFunction(x) {
+        document.getElementById("txtDescriptionPerson").value = x;
+        document.getElementById("submitbtn").click();
+    }
 </script>
 
 </body>

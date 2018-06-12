@@ -1,8 +1,8 @@
-<!-- ./views/main.ejs -->
 <html>
     <head>
-        <title>Movie</title>
+        <title>Movie</title>  
     </head>
+    
 <style>
     #h1 {
         font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -21,75 +21,61 @@
     padding: 8px;
     }
     #table1 tr:nth-child(even){background-color: #f2f2f2;}
-
-#table1 tr:hover {background-color: #ddd;}
-
-#table1 th {
+    #table1 tr:hover {background-color: #ddd;}
+    #table1 th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
     background-color: #4CAF50;
     color: white;
-}
-
-   #table2 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 50%;
-    position: absolute;
-    right: 0px;
     }
-    #table2 td, #table2 th {
-    border: 1px solid #ddd;
-    padding: 8px;
-    }
-    #table12 tr:nth-child(even){background-color: #f2f2f2;}
-
-#table2 tr:hover {background-color: #ddd;}
-
-#table2 th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-}
-
 </style>
 <body>
-<!-- <div class="jumbotron text-center"> -->
-<h1 id="h1">Movies <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">profile</object></a></h1>
+
+    <h1 id="h1">Movies 
+        <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">Profile</object></a>
+        <a href="/visualization" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px; margin-right:15px">Graph</object></a>
+    </h1>
 
 <form method="post" action="/movies/search">
-
-<label>Search Movie</label><br>
-<input type="text" id="txtMovie" name="searchMovie"><br>
-<input type="submit" id="submitbtn" value="Submit">
-
+    <label>Search Movie: </label>
+    <label>"MATCH (n:Movie) WHERE n.title =~ <input style="text-align: center" type="text" id="txtMovie" name="searchMovie"> return n "</label><br>
+    <input type="submit" id= "submitbtn" value="Submit">
 </form>
 
 <table id="table1" style="border-style:double;">
     <tr>
-        <th>ID</th>
         <th>Movie</td>
+        <th>Poster</th>
         <th>Tagline</td>
+        <th>Released</th>
+        <th>Watch</th>
     </tr>
-<% movies.forEach(function(movie){ %>
-    <tr onclick = "myFunction('<%= movie.title %>')">
-        <td><%= movie.id %> </td>
-        <td><%= movie.title %></td>
+    
+    <% movies.forEach(function(movie){ %>
+    <tr >
+        <td  onclick = "myFunction('<%= movie.title %>')", "createRel('<%= movie.title %>')"><%= movie.title %></td>
+        <td><img src="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/posters/<%= movie.title %>.jpg"></td>
         <td><%= movie.tagline %> </td>
+        <td><%= movie.released %> </td>
+        <td>
+             <form method="post" action="/movies/clickWatch">
+                <button onclick = "alert('You have watched: ' + '<%= movie.title %>')"  value="<%= movie.title %>" name="inputClickWatch" >  Watch  </button>
+            </form>
+        </td>
     </tr>
-<% }) %>
-
+    <% }) %>
 </table>
+
 <script>
     function myFunction(x) {
         document.getElementById("txtMovie").value = x;
         document.getElementById("submitbtn").click();
     }
-</script>
+  
+ </script>
+
+ 
 </body>
-<!-- </div> -->
 </html>
 
